@@ -27,10 +27,6 @@ public class HistogramModel {
         return n1;
     }
 
-    public int getN2() {
-        return n2;
-    }
-
     public int getN3() {
         return n3;
     }

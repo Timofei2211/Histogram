@@ -26,7 +26,7 @@ public class DrawingComponent extends JPanel{
         DecimalFormat df = new DecimalFormat("#.##");
         for (int i = 0; i <19 ; i++) {
 
-                drp.drawString(String.valueOf(df.format((GenerateRandomValues.min) + (i * GenerateRandomValues.h))), 110+50*i, 420);
+            drp.drawString(String.valueOf(df.format((GenerateRandomValues.min) + (i * GenerateRandomValues.h))), 110+50*i, 420);
 
         }
 
