@@ -88,7 +88,6 @@ public class ExcelWriter {
                     cell6.setCellValue(ar20[j]);
                 }
             }
-
         }
 
         FileOutputStream fos = null;
@@ -100,6 +99,5 @@ public class ExcelWriter {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
