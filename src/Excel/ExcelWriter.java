@@ -13,14 +13,24 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ExcelWriter {
+
     public void saveToFile(HistogramModel model) {
         Workbook wb = new HSSFWorkbook();
-        Sheet sheet = wb.createSheet("Normal");
-        ArrayList<Double> numberAveraging = GenerateRandomValues.listAveraging;
-        for (int i = 0; i <numberAveraging.size() ; i++) {
-            System.out.println("sfdhfg");
-            System.out.println(numberAveraging.get(i));
+        Sheet normal = wb.createSheet("Normal");
+        setValues(normal, model);
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream("C:/" + String.valueOf(GenerateRandomValues.n1) + "_" + String.valueOf(GenerateRandomValues.n2) + "_" + String.valueOf(GenerateRandomValues.n3)
+                    + "_" + String.valueOf(GenerateRandomValues.mean) + "_" + String.valueOf(GenerateRandomValues.deviation) + ".xls");
+            wb.write(fos);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    public void setValues(Sheet sheet, HistogramModel model) {
+        ArrayList<Double> numberAveraging = GenerateRandomValues.listAveraging;
         int[] ar20 = model.getHeights();
         for (int i = 0; i < model.getN1(); i++) {
             Row row = sheet.createRow(i);
@@ -51,7 +61,6 @@ public class ExcelWriter {
                 Cell cell2 = row.createCell(7);
                 cell2.setCellValue(GenerateRandomValues.getStdDev(model.getList()));
             }
-
             if (i == 0) {
                 Cell cell1 = row.createCell(8);
                 cell1.setCellValue("РеалМатОжидание2");
@@ -77,27 +86,17 @@ public class ExcelWriter {
                 cell4.setCellValue(model.getDeviation());
             }
             for (int j = 0; j < model.getN3(); j++) {
-                if (i==j){
-                Cell cell5 = row.createCell(1);
-                cell5.setCellValue(numberAveraging.get(j));
+                if (i == j) {
+                    Cell cell5 = row.createCell(1);
+                    cell5.setCellValue(numberAveraging.get(j));
                 }
             }
             for (int j = 0; j < 20; j++) {
-                if (i==j){
+                if (i == j) {
                     Cell cell6 = row.createCell(4);
                     cell6.setCellValue(ar20[j]);
                 }
             }
-        }
-
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream("C:/"+String.valueOf(GenerateRandomValues.n1)+"_"+String.valueOf(GenerateRandomValues.n2)+"_"+String.valueOf(GenerateRandomValues.n3)
-                    +"_"+String.valueOf(GenerateRandomValues.mean)+"_"+String.valueOf(GenerateRandomValues.deviation)+".xls");
-            wb.write(fos);
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

@@ -11,6 +11,7 @@ public class HistogramModel {
     private int mean;
     private int deviation;
     private ArrayList<Double> list;
+    private ArrayList<Double> listLog;
     private int[] heights;
 
     public HistogramModel(GenerateRandomValues generateRandomValues) {

@@ -25,7 +25,11 @@ public class GenerateRandomValues {
     double[] data;
     int size;
 
-    public GenerateRandomValues() {
+    public enum Selection {
+        NORMAl, LOGNORMAL
+    }
+
+    public GenerateRandomValues(Selection selection) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите количество выбор. проб(нач.20 000)");
         n1 = scanner.nextInt();
@@ -37,6 +41,12 @@ public class GenerateRandomValues {
         mean = scanner.nextInt();
         System.out.println("Введите среднекв.отклонение");
         deviation = scanner.nextInt();
+        switch (selection) {
+            case LOGNORMAL:
+                list=generateList();
+            case NORMAl:
+                list=generateLogList();
+        }
         list = generateList();
         listAveraging=generateListAveraging();
         heights = generateHeights();
@@ -76,10 +86,25 @@ public class GenerateRandomValues {
 
     public static ArrayList<Double> generateList() {
         ArrayList<Double> list = new ArrayList<>();
-        for (int i = 0; i < n1; i++) {
-            list.add(normal(mean, deviation));
-            System.out.println(list.get(i));
-            System.out.println(list.size());
+        {
+            for (int i = 0; i < n1; i++) {
+                list.add(normal(mean, deviation));
+                System.out.println(list.get(i));
+                System.out.println(list.size());
+            }
+        }
+        Collections.sort(list);
+        return list;
+    }
+
+    public static ArrayList<Double> generateLogList() {
+        ArrayList<Double> list = new ArrayList<>();
+        {
+            for (int i = 0; i < n1; i++) {
+                list.add(Math.exp(normal(mean, deviation)));
+                System.out.println(list.get(i));
+                System.out.println(list.size());
+            }
         }
         Collections.sort(list);
         return list;
