@@ -11,8 +11,8 @@ public class HistogramModel {
     private int mean;
     private int deviation;
     private ArrayList<Double> list;
-    private ArrayList<Double> listLog;
     private int[] heights;
+    private ArrayList<Double> listAveraging;
 
     public HistogramModel(GenerateRandomValues generateRandomValues) {
         this.n1 = generateRandomValues.getN1();
@@ -22,10 +22,15 @@ public class HistogramModel {
         this.deviation = generateRandomValues.getDeviation();
         this.list = generateRandomValues.getList();
         this.heights = generateRandomValues.getHeights();
+        this.listAveraging=generateRandomValues.getListAveraging();
     }
 
     public int getN1() {
         return n1;
+    }
+
+    public int getN2() {
+        return n2;
     }
 
     public int getN3() {
@@ -40,11 +45,21 @@ public class HistogramModel {
         return deviation;
     }
 
+    public void setList(ArrayList<Double> list) {
+        this.list = list;
+    }
+
     public ArrayList<Double> getList() {
         return list;
     }
 
+
+
     public int[] getHeights() {
         return heights;
+    }
+
+    public ArrayList<Double> getListAveraging() {
+        return listAveraging;
     }
 }

@@ -17,11 +17,20 @@ public class ExcelWriter {
     public void saveToFile(HistogramModel model) {
         Workbook wb = new HSSFWorkbook();
         Sheet normal = wb.createSheet("Normal");
+        Sheet normalLog = wb.createSheet("LogNormal");
+
         setValues(normal, model);
+//        model.setList(GenerateRandomValues.generateList());
+//        model.setListAveraging(GenerateRandomValues.generateListAveraging());
+//        model.setHeights(GenerateRandomValues.generateHeights());
+        model.setList(GenerateRandomValues.generateLogList());
+        model.setListAveraging(GenerateRandomValues.generateListAveraging());
+        model.setHeights(GenerateRandomValues.generateHeights());
+        setValues(normalLog,model);
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream("C:/" + String.valueOf(GenerateRandomValues.n1) + "_" + String.valueOf(GenerateRandomValues.n2) + "_" + String.valueOf(GenerateRandomValues.n3)
-                    + "_" + String.valueOf(GenerateRandomValues.mean) + "_" + String.valueOf(GenerateRandomValues.deviation) + ".xls");
+            fos = new FileOutputStream("C:/" + String.valueOf(model.getN1()) + "_" + String.valueOf(model.getN2()) + "_" + String.valueOf(model.getN3())
+                    + "_" + String.valueOf(model.getMean()) + "_" + String.valueOf(model.getDeviation()) + ".xls");
             wb.write(fos);
             fos.close();
         } catch (IOException e) {
@@ -30,7 +39,7 @@ public class ExcelWriter {
     }
 
     public void setValues(Sheet sheet, HistogramModel model) {
-        ArrayList<Double> numberAveraging = GenerateRandomValues.listAveraging;
+        ArrayList<Double> numberAveraging = model.getListAveraging();
         int[] ar20 = model.getHeights();
         for (int i = 0; i < model.getN1(); i++) {
             Row row = sheet.createRow(i);
@@ -67,7 +76,7 @@ public class ExcelWriter {
             }
             if (i == 1) {
                 Cell cell2 = row.createCell(8);
-                cell2.setCellValue(GenerateRandomValues.calculateMean(GenerateRandomValues.listAveraging));
+                cell2.setCellValue(GenerateRandomValues.calculateMean(model.getListAveraging()));
             }
             if (i == 0) {
                 Cell cell1 = row.createCell(9);
@@ -75,7 +84,7 @@ public class ExcelWriter {
             }
             if (i == 1) {
                 Cell cell2 = row.createCell(9);
-                cell2.setCellValue(GenerateRandomValues.getStdDev(GenerateRandomValues.listAveraging));
+                cell2.setCellValue(GenerateRandomValues.getStdDev(model.getListAveraging()));
             }
             if (i == 2) {
                 Cell cell3 = row.createCell(2);
