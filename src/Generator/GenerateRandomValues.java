@@ -42,7 +42,7 @@ public class GenerateRandomValues {
             this.listValues = generateLogList();
 
         }
-        this.listAveraging=generateListAveraging();
+        this.listAveraging=generateListAveraging();                         //////////////////////////////////////////
         this.heights = generateHeights();
         this.max = listAveraging.get(listAveraging.size()- 1);
         this.min = listAveraging.get(0);

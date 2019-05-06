@@ -12,11 +12,8 @@ public class GrGis4 extends JFrame {
     public HistogramModel histogramModel;
 
     public GrGis4(HistogramModel histogramModel) {
-        this.histogramModel = histogramModel;
-    }
-
-    public GrGis4() {
         super("Обычная гистограмма");
+        this.histogramModel = histogramModel;
         JPanel jcp = new JPanel(new BorderLayout());
         setContentPane(jcp);
         jcp.add(new DrawingComponent4(histogramModel), BorderLayout.CENTER);
