@@ -14,23 +14,16 @@ import java.util.ArrayList;
 
 public class ExcelWriter {
 
-    public void saveToFile(HistogramModel model) {
+    public void saveToFile(HistogramModel model1, HistogramModel model2) {
         Workbook wb = new HSSFWorkbook();
         Sheet normal = wb.createSheet("Normal");
         Sheet normalLog = wb.createSheet("LogNormal");
-
-        setValues(normal, model);
-//        model.setList(GenerateRandomValues.generateList());
-//        model.setListAveraging(GenerateRandomValues.generateListAveraging());
-//        model.setHeights(GenerateRandomValues.generateHeights());
-        model.setList(GenerateRandomValues.generateLogList());
-        model.setListAveraging(GenerateRandomValues.generateListAveraging());
-        model.setHeights(GenerateRandomValues.generateHeights());
-        setValues(normalLog,model);
+        setValues(normal, model1);
+        setValues(normalLog,model2);
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream("C:/" + String.valueOf(model.getN1()) + "_" + String.valueOf(model.getN2()) + "_" + String.valueOf(model.getN3())
-                    + "_" + String.valueOf(model.getMean()) + "_" + String.valueOf(model.getDeviation()) + ".xls");
+            fos = new FileOutputStream("C:/" + String.valueOf(model1.getN1()) + "_" + String.valueOf(model1.getN2()) + "_" + String.valueOf(model1.getN3())
+                    + "_" + String.valueOf(model1.getMean()) + "_" + String.valueOf(model1.getDeviation()) + ".xls");
             wb.write(fos);
             fos.close();
         } catch (IOException e) {

@@ -6,18 +6,19 @@ import java.util.Scanner;
 
 public class GenerateRandomValues {
 
-    public static int n1;
-    public static int n2;
-    public static int n3;
-    public static int mean;
-    public static int deviation;
-    private static ArrayList<Double> list2;
-    public static int[] heights;
+    private int n1;
+    private int n2;
+    private int n3;
+    private int mean;
+    private int deviation;
+    private ArrayList<Double> listValues;
+    public int[] heights;
 
-    public static ArrayList<Double> listAveraging;
-    public static double h;
-    public static double max;
-    public static double min;
+    public ArrayList<Double> listAveraging;
+
+    public double h;
+    public double max;
+    public double min;
 
     private static double second;
     private static boolean secondValid = false;
@@ -25,25 +26,28 @@ public class GenerateRandomValues {
     double[] data;
     int size;
 
-    public GenerateRandomValues() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Введите количество выбор. проб(нач.20 000)");
-        n1 = scanner.nextInt();
-        System.out.println("Введите количество точек выборки(нач. 10)");
-        n2 = scanner.nextInt();
-        System.out.println("Введите количество усреднений(нач. 2 000 )");
-        n3 = scanner.nextInt();
-        System.out.println("Введите мат.ожидание");
-        mean = scanner.nextInt();
-        System.out.println("Введите среднекв.отклонение");
-        deviation = scanner.nextInt();
-        list2 = generateList();
-        listAveraging=generateListAveraging();
-        heights = generateHeights();
-        max = listAveraging.get(listAveraging.size()- 1);
-        min = listAveraging.get(0);
+    public enum Selection {
+        NORMAL, LOGNORMAL
+    }
+
+    public GenerateRandomValues(int n1, int n2, int n3, int mean, int deviation,boolean isNormal) {
+        this.n1=n1;
+        this.n2=n2;
+        this.n3=n3;
+        this.mean=mean;
+        this.deviation=deviation;
+        if(isNormal) {
+                this.listValues = generateList(); }
+                else {
+            this.listValues = generateLogList();
+
+        }
+        this.listAveraging=generateListAveraging();
+        this.heights = generateHeights();
+        this.max = listAveraging.get(listAveraging.size()- 1);
+        this.min = listAveraging.get(0);
         int n = 20;
-        h = (max - min) / n;
+        this.h = (max - min) / n;
     }
 
     public int getN1() {
@@ -67,18 +71,18 @@ public class GenerateRandomValues {
     }
 
     public ArrayList<Double> getList() {
-        return list2;
+        return listValues;
     }
 
     public int[] getHeights() {
         return heights;
     }
 
-    public static ArrayList<Double> getListAveraging() {
+    public ArrayList<Double> getListAveraging() {
         return listAveraging;
     }
 
-    public static ArrayList<Double> generateList() {
+    public ArrayList<Double> generateList() {
         ArrayList<Double> list = new ArrayList<>();
         {
             for (int i = 0; i < n1; i++) {
@@ -87,38 +91,28 @@ public class GenerateRandomValues {
         }
         Collections.sort(list);
         for (int i = 0; i < n1; i++) {
-            System.out.println("нормальный");
+            System.out.println("кек");
             System.out.println(list.get(i));
         }
         return list;
     }
 
-    public static ArrayList<Double> generateLogList() {
+    public ArrayList<Double> generateLogList() {
         ArrayList<Double> list = new ArrayList<>();
+        for (int i = 0; i < n1; i++) {
+            list.add(normal(mean, deviation));
+        }
+        ArrayList<Double> listLog = new ArrayList<>();
         {
             for (int i = 0; i < n1; i++) {
-                list.add(Math.exp(list2.get(i)));
-                System.out.println(list2.get(i));
-                System.out.println(list2.size());
+                listLog.add(Math.exp(list.get(i)));
             }
         }
-        Collections.sort(list);
-        return list;
+        Collections.sort(listLog);
+        return listLog;
     }
 
-    public static double calculateMean(ArrayList<Double> list) {
-        Double sum = 0.0;
-        for(Double number : list) {
-            sum = sum + number;
-        }
-        return sum/list.size();
-    }
-
-    public static int[] generateHeights() {
-        System.out.println("кек");
-        for (int i = 0; i < listAveraging.size(); i++) {
-            System.out.println(listAveraging.get(i));
-        }
+    public int[] generateHeights() {
         double max = listAveraging.get(listAveraging.size()- 1);
         double min = listAveraging.get(0);
         int n = 20;
@@ -133,9 +127,31 @@ public class GenerateRandomValues {
                     heights[i] += 1;
                 }
             }
-            System.out.println(heights[i]);
         }
         return heights;
+    }
+
+
+    public ArrayList<Double> generateListAveraging() {       ///// для вывода 2го массива в Excel
+        ArrayList<Double> numberAveraging = new ArrayList<>();
+        for (int i = 0; i < n3; i++) {
+            ArrayList<Double> numberRandomValues = new ArrayList<>();
+            for (int j = 0; j < n2; j++) {
+                numberRandomValues.add(listValues.get((int) Math.floor(Math.random() * listValues.size())));
+                //   System.out.println("Рандомное значение из 20000  " + array2[j]);
+            }
+            double sum = 0;
+            for (int j = 0; j < n2; j++) {
+                sum = sum + numberRandomValues.get(j);
+                //   System.out.println(sum);
+            }
+            double meanNumberRandomValues;
+            meanNumberRandomValues = sum / numberRandomValues.size();
+            numberAveraging.add(meanNumberRandomValues);
+            //  System.out.println("Среднее из 10 = " + array3[i]);
+        }
+        Collections.sort(numberAveraging);
+        return numberAveraging;////сортировка массива из 2000 элементов
     }
 
     public static double normal(double mean, double std) {
@@ -161,28 +177,6 @@ public class GenerateRandomValues {
         return x1;
     }
 
-    public static ArrayList<Double> generateListAveraging() {       ///// для вывода 2го массива в Excel
-        ArrayList<Double> numberAveraging = new ArrayList<>();
-        for (int i = 0; i < n3; i++) {
-            ArrayList<Double> numberRandomValues = new ArrayList<>();
-            for (int j = 0; j < n2; j++) {
-                numberRandomValues.add(list2.get((int) Math.floor(Math.random() * list2.size())));
-                //   System.out.println("Рандомное значение из 20000  " + array2[j]);
-            }
-            double sum = 0;
-            for (int j = 0; j < n2; j++) {
-                sum = sum + numberRandomValues.get(j);
-                //   System.out.println(sum);
-            }
-            double meanNumberRandomValues;
-            meanNumberRandomValues = sum / numberRandomValues.size();
-            numberAveraging.add(meanNumberRandomValues);
-            //  System.out.println("Среднее из 10 = " + array3[i]);
-        }
-        Collections.sort(numberAveraging);
-        return numberAveraging;////сортировка массива из 2000 элементов
-    }
-
         public static double getVariance(ArrayList<Double> list) {
             double mean = calculateMean(list);
             double temp = 0;
@@ -194,5 +188,13 @@ public class GenerateRandomValues {
         public static double getStdDev(ArrayList<Double> list) {
             return Math.sqrt(getVariance(list));
         }
+
+    public static double calculateMean(ArrayList<Double> list) {
+        Double sum = 0.0;
+        for(Double number : list) {
+            sum = sum + number;
+        }
+        return sum/list.size();
+    }
 
 }

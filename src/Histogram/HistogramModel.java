@@ -5,21 +5,26 @@ import Generator.GenerateRandomValues;
 import java.util.ArrayList;
 
 public class HistogramModel {
-    private int n1;
-    private int n2;
-    private int n3;
-    private int mean;
-    private int deviation;
+    public static int n1;
+    public static int n2;
+    public static int n3;
+    public static int mean;
+    public static int deviation;
+
     private ArrayList<Double> list;
     private int[] heights;
     private ArrayList<Double> listAveraging;
 
+    public double h;
+    public double max;
+    public double min;
+
     public HistogramModel(GenerateRandomValues generateRandomValues) {
-        this.n1 = generateRandomValues.getN1();
-        this.n2 = generateRandomValues.getN2();
-        this.n3 = generateRandomValues.getN3();
-        this.mean = generateRandomValues.getMean();
-        this.deviation = generateRandomValues.getDeviation();
+        n1 = generateRandomValues.getN1();
+        n2 = generateRandomValues.getN2();
+        n3 = generateRandomValues.getN3();
+        mean = generateRandomValues.getMean();
+        deviation = generateRandomValues.getDeviation();
         this.list = generateRandomValues.getList();
         this.heights = generateRandomValues.getHeights();
         this.listAveraging=generateRandomValues.getListAveraging();
@@ -45,15 +50,9 @@ public class HistogramModel {
         return deviation;
     }
 
-    public void setList(ArrayList<Double> list) {
-        this.list = list;
-    }
-
     public ArrayList<Double> getList() {
         return list;
     }
-
-
 
     public int[] getHeights() {
         return heights;
@@ -61,5 +60,18 @@ public class HistogramModel {
 
     public ArrayList<Double> getListAveraging() {
         return listAveraging;
+    }
+
+    public double getH() {
+        int n = 20;
+        return (max-min)/n;
+    }
+
+    public double getMax() {
+        return listAveraging.get(listAveraging.size()-1);
+    }
+
+    public double getMin() {
+        return listAveraging.get(0);
     }
 }
