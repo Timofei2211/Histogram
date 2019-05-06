@@ -64,7 +64,7 @@ public class HistogramModel {
 
     public double getH() {
         int n = 20;
-        return (max-min)/n;
+        return (getMax()-getMin())/n;
     }
 
     public double getMax() {

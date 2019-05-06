@@ -15,11 +15,13 @@ public class DrawingComponent3 extends JPanel{
     private Graphics gh;
 
     private double max;
+    private double min;
     private double h;
 
     public DrawingComponent3(HistogramModel histogramModel) {
         this.max=histogramModel.getMax();
-        this.h=histogramModel.getMin();
+        this.min=histogramModel.getMin();
+        this.h=histogramModel.getH();
     }
 
     @Override
@@ -32,10 +34,10 @@ public class DrawingComponent3 extends JPanel{
             int vs = 800 - i*100;
             drp.drawString(vs+"", 30, 2+50*i);
         }
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df1 = new DecimalFormat("##.##");
         for (int i = 0; i <19 ; i++) {
 
-            drp.drawString(String.valueOf(df.format((max) + (i * h))), 110+50*i, 420);
+            drp.drawString(String.valueOf(df1.format((min) + (i * h))), 110+50*i, 420);
 
         }
 
